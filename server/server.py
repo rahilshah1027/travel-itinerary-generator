@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 #from authlib.integrations.flask_client import OAuth
 from sqlalchemy.orm import DeclarativeBase
 import os, requests
+from api import fetch_places
 
 class Base(DeclarativeBase):
   pass
@@ -40,7 +41,12 @@ GOOGLE_CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 @app.route('/')
 def homepage():
     #user = session.get('user')
-    return render_template('home.html')
+
+    #opentripmap api call
+    lat, lon = 40.7128, -74.0060  # Example coordinates
+    places_response = fetch_places(lat, lon)
+    return render_template('home.html', places=places_response['features'])
+
 
 @app.route('/login')
 def login():
@@ -58,3 +64,7 @@ def auth():
 def logout():
     session.pop('user', None)
     return redirect('/')
+
+
+#opentripmap api call
+
