@@ -6,6 +6,7 @@ from sqlalchemy.orm import DeclarativeBase
 import os, requests
 from api import fetch_places
 from flask import jsonify, request
+from dotenv import load_dotenv
 import openai
 
 
@@ -15,6 +16,7 @@ class Base(DeclarativeBase):
 app = Flask(__name__, template_folder='../client/templates')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 db = SQLAlchemy(app)
+load_dotenv()
 #oauth = OAuth(app)
 
 GOOGLE_CLIENT_ID = os.getenv('CLIENT_ID')
@@ -51,11 +53,12 @@ def homepage():
 
     return render_template('home.html', places=places_response['features'])
 
+#chatgpt chat
 @app.route('/chat', methods=['POST'])
 def chat():
     user_message = request.json['message']
     api_url = "https://api.openai.com/v1/chat/completions"  # This URL might change based on the API you're using
-    api_key = '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'
+    api_key = os.getenv('OPENAI_API_KEY')
 
     headers = {
         "Authorization": f"Bearer {api_key}",
