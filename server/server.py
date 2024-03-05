@@ -58,7 +58,7 @@ def homepage():
 def chat():
     user_message = request.json['message']
     api_url = "https://api.openai.com/v1/chat/completions"  # This URL might change based on the API you're using
-    api_key = os.getenv('OPENAI_API_KEY')
+    api_key = 1 #PUT OPENAI API KEY HERE
 
     headers = {
         "Authorization": f"Bearer {api_key}",
