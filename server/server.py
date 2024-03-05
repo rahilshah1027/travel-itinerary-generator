@@ -5,6 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 import os, requests
 from api import fetch_places
+from flask import jsonify, request
+import openai
+
 
 class Base(DeclarativeBase):
   pass
@@ -45,8 +48,33 @@ def homepage():
     #opentripmap api call
     lat, lon = 40.7128, -74.0060  # Example coordinates
     places_response = fetch_places(lat, lon)
+
     return render_template('home.html', places=places_response['features'])
 
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.json['message']
+    api_url = "https://api.openai.com/v1/chat/completions"  # This URL might change based on the API you're using
+    api_key = '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'
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    data = {
+        "model": "gpt-3.5-turbo",  # Adjust model as needed
+        "messages": [
+            {"role": "user", "content": user_message}
+        ]
+    }
+
+    response = requests.post(api_url, json=data, headers=headers)
+    if response.status_code == 200:
+        chat_response = response.json()['choices'][0]['message']['content']
+        return jsonify({"response": chat_response})
+    else:
+        return jsonify({"error": "Failed to fetch response from the API"}), 500
 
 @app.route('/login')
 def login():

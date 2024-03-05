@@ -7,7 +7,35 @@
 </head>
 <body>
     <p> Hello world</p>
-    <h1>Nearby Interesting Places</h1>
+    <h1>API1: ChatGPT Interface</h1>
+    <textarea id="userMessage" placeholder="Type your message here"></textarea>
+    <button onclick="sendMessage()">Send</button>
+    <p id="response"></p>
+
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById('userMessage').value;
+            const responseParagraph = document.getElementById('response');
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage }),
+                });
+
+                const data = await response.json();
+                responseParagraph.textContent = 'GPT: ' + data.response;
+
+            } catch (error) {
+                console.error('Error:', error);
+                responseParagraph.textContent = 'Error: Could not connect to the server.';
+            }
+        }
+    </script>
+    <h1>API2: Nearby Interesting Places with OpenTripMap</h1>
     {% if places %}
         <ul>
         {% for place in places %}
