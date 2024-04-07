@@ -2,21 +2,29 @@ from flask import Flask, url_for, session
 from flask import render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from authlib.integrations.flask_client import OAuth
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 import os, requests
 from api import fetch_places
 from flask import jsonify, request
 from dotenv import load_dotenv
 
-class Base(DeclarativeBase):
-  pass
-
 app = Flask(__name__, template_folder='../client/templates')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 app.secret_key = "randomstuff"
 db = SQLAlchemy(app)
-load_dotenv()
 oauth = OAuth(app)
+load_dotenv()
+
+# creating database models
+class User(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(unique=True)
+    email: Mapped[str]
+#class Itinerary(db.Model):
+    #pass
+with app.app_context():
+    db.create_all()
 
 GOOGLE_CLIENT_ID = os.getenv('CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('CLIENT_SECRET')
@@ -32,11 +40,7 @@ oauth.register(
     }
 )
 
-# creating database models
-#class User(db.Model):
-    #pass
-#class Itinerary(db.Model):
-    #pass
+
 
 # all the routes
 # @app.route("/users")
@@ -46,12 +50,15 @@ oauth.register(
 
 @app.route('/')
 def homepage():
-    #user = session.get('user')
-
+    if 'user' in session:
+        user = session['user']
+        print("User in session")
+    else:
+        print("User not in session")
+        return redirect(url_for('login'))
     #opentripmap api call
     lat, lon = 40.7128, -74.0060  # Example coordinates
     places_response = fetch_places(lat, lon)
-
     return render_template('home.html', places=places_response['features'])
 
 #chatgpt chat
@@ -82,15 +89,30 @@ def chat():
 
 @app.route('/login')
 def login():
+    if 'user' in session:
+        return redirect(url_for('/'))
     redirect_uri = url_for('auth', _external=True)
     return oauth.google.authorize_redirect(redirect_uri)
     
+def user_create(name, email):
+    user = User(
+        name=name,
+        email=email,
+    )
+    db.session.add(user)
+    db.session.commit()
+    print("User Added: ", user)
+    return redirect(url_for('/'))
 
 @app.route('/auth')
 def auth():
-    token = oauth.google.authorize_access_token()
-    session['user'] = token['userinfo']
-    print(token['userinfo'])
+    if 'user' not in session:
+        token = oauth.google.authorize_access_token()
+        session['user'] = token['userinfo']
+        user_info = session['user']
+        user = User.query.filter_by(email=user_info['email']).first()
+        if not user:
+            user_create(user_info['name'], user_info['email'])
     return redirect('/')
 
 @app.route('/logout')
