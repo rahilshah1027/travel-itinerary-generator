@@ -1,41 +1,42 @@
 from flask import Flask, url_for, session
 from flask import render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
-#from authlib.integrations.flask_client import OAuth
+from authlib.integrations.flask_client import OAuth
 from sqlalchemy.orm import DeclarativeBase
 import os, requests
 from api import fetch_places
 from flask import jsonify, request
 from dotenv import load_dotenv
-import openai
-
 
 class Base(DeclarativeBase):
   pass
 
 app = Flask(__name__, template_folder='../client/templates')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+app.secret_key = "randomstuff"
 db = SQLAlchemy(app)
 load_dotenv()
-#oauth = OAuth(app)
+oauth = OAuth(app)
 
 GOOGLE_CLIENT_ID = os.getenv('CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
-# CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
-# oauth.register(
-#     name='google',
-#     server_metadata_url=CONF_URL,
-#     client_kwargs={
-#         'scope': 'openid email profile'
-#     }
-# )
+CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+oauth.register(
+    name='google',
+    client_id = GOOGLE_CLIENT_ID,
+    client_secret = GOOGLE_CLIENT_SECRET,
+    server_metadata_url=CONF_URL,
+    client_kwargs={
+        'scope': 'openid email profile'
+    }
+)
 
 # creating database models
-# class User(db.Model):
-#     pass
-# class Itinerary(db.Model):
-#     pass
+#class User(db.Model):
+    #pass
+#class Itinerary(db.Model):
+    #pass
 
 # all the routes
 # @app.route("/users")
@@ -82,13 +83,14 @@ def chat():
 @app.route('/login')
 def login():
     redirect_uri = url_for('auth', _external=True)
-    #return oauth.google.authorize_redirect(redirect_uri)
-    pass
+    return oauth.google.authorize_redirect(redirect_uri)
+    
 
 @app.route('/auth')
 def auth():
-    #token = oauth.google.authorize_access_token()
+    token = oauth.google.authorize_access_token()
     session['user'] = token['userinfo']
+    print(token['userinfo'])
     return redirect('/')
 
 @app.route('/logout')
