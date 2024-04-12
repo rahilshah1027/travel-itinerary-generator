@@ -1,25 +1,20 @@
 from flask import Flask, url_for, session
 from flask import render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
+from authlib.integrations.flask_client import OAuth
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 import os, requests
 from api import fetch_places
 from flask import jsonify, request
 from dotenv import load_dotenv
-import openai
-from authlib.integrations.flask_client import OAuth
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-
-
-class Base(DeclarativeBase):
-  pass
 
 app = Flask(__name__, template_folder='../client/templates')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
-db = SQLAlchemy(app)
 app.secret_key = "randomstuff"
-load_dotenv()
+db = SQLAlchemy(app)
 oauth = OAuth(app)
+load_dotenv()
 
 # creating database models
 class User(db.Model):
@@ -30,7 +25,6 @@ class User(db.Model):
     #pass
 with app.app_context():
     db.create_all()
-
 
 GOOGLE_CLIENT_ID = os.getenv('CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('CLIENT_SECRET')
@@ -62,14 +56,25 @@ def homepage():
         print("User not in session")
         return redirect(url_for('login'))
 
+    return render_template('home.html')
+
+@app.route('/search', methods=['POST'])
+def search():
+    interests = request.form.getlist('interests')
+    locations = {
+        'amusement': 'Disneyland Park, Anaheim, CA',
+        'sports': 'Yankee Stadium, Bronx, NY',
+        # Add more interests and locations as needed
+    }
+    selected_locations = [locations[interest] for interest in interests if interest in locations]
+
     #opentripmap api call
     #interests = request.form.getlist('interests')
-    lat, lon = 40.7128, -74.0060  # Example coordinates
-    #kinds = ','.join(interests)
+    lat, lon = 40.7128, -74.0060
     places_response = fetch_places(lat, lon)
-
-    return render_template('home.html', places=places_response['features'])
-
+    #kinds = ','.join(interests)
+    
+    return render_template('results.html', selected_locations=selected_locations, places=places_response['features'])
 
 @app.route('/login')
 def login():
@@ -104,3 +109,5 @@ def logout():
     session.pop('user', None)
     return redirect('/')
 
+if __name__ == '__main__':
+    app.run(debug=True)
