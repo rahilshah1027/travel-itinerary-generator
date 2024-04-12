@@ -6,6 +6,17 @@
 
 We decided to create a website that allows users to enter their interests and get suggested travel itineraries. Our approach leverages the ChatGPT API to take the user's interests and construct a travel itinerary for them based on their input. Additionally, we will use a database to store previous user-generated itineraries.
 
+# Build Instructions
+- Clone the github repo locally.
+- Using pip or any other package manager and install the following:
+  - Flask
+  - flask_sqlalchemy
+  - sqlalchemy
+  - authlib
+- Change directory into the server folder.
+- Go into the console and type in "flask --app server.py run"
+- Navigate to the IP Address listed in the console and you are good to go!
+
 # Product Requirements
 
 ## Product Goal
