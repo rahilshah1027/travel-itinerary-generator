@@ -8,25 +8,13 @@
 <body>
     <p> Hello world</p>
     
-    <h1>API2: Nearby Interesting Places with OpenTripMap</h1>
-    <!-- Add this form inside your <body> tag in home.html -->
+    <h1>API1: Find places based on your interests w/ ChatGPT</h1>
     <form action="/search" method="post">
-        <label><input type="checkbox" name="interests" value="amusement"> Amusement and fun</label>
-        <label><input type="checkbox" name="interests" value="sport"> Sports</label>
-    <!-- Add more interests as needed -->
+        <label><input type="checkbox" name="interests" value="amusement">Amusement parks</label>
+        <label><input type="checkbox" name="interests" value="sports">Sports</label>
+        <!-- Add more interests as needed -->
         <button type="submit">Find Places</button>
     </form>
-
-    {% if places %}
-        <ul>
-        {% for place in places %}
-            <li>
-                <strong>{{ place.properties.name }}</strong>
-            </li>
-        {% endfor %}
-        </ul>
-        {% else %}
-            <p>No points of interest found.</p>
-        {% endif %}
+    
 </body>
 </html>
