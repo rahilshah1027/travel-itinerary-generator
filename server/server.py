@@ -4,10 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 from authlib.integrations.flask_client import OAuth
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-import os, requests
 from api import fetch_places
 from flask import jsonify, request
 from dotenv import load_dotenv
+import os, requests, random
 
 app = Flask(__name__, template_folder='../client/templates')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
@@ -59,6 +59,7 @@ def homepage():
 
 @app.route('/search', methods=['POST'])
 def search():
+    location = request.form.get('location')
     interests = request.form.getlist('interests')
     # check if the user entered any interests
     if len(interests) == 0:
@@ -81,18 +82,24 @@ def search():
         'historical': 'historic',
         'architecture': 'architecture',
         'amusements': 'amusements',
-        # Add more interests and locations as needed
     }
     kinds = ','.join(interest_map[i] for i in interests if i in interest_map)
 
     #opentripmap api call
-    #interests = request.form.getlist('interests')
-    lat, lon = 40.7128, -74.0060
-    places_response = fetch_places(lat, lon, kinds=kinds)
-    print(places_response['features'])
-    places = [places_response['features'][i] for i in range(5)]
-    print(places)
-    return render_template('results.html', interests=interests, selected_locations=selected_locations, places=places)
+    location_coords = {
+        "New York City": (40.7128, -74.0060), 
+        "Los Angeles": (34.052235, -118.243683),
+        "Boston": (42.360081, -71.058884),
+        "Chicago": (41.878113, -87.629799),
+        "Miami": (25.761681, -80.191788)
+    }
+    #lat, lon = 40.7128, -74.0060
+    lat, lon = location_coords[location][0], location_coords[location][1]
+    places_response = fetch_places(lat, lon, radius=40000, kinds=kinds)
+
+    #filter out places with no names and chose 5 random ones
+    random5 = random.choices([place for place in places_response['features'] if place['properties']['name'] != ''], k=min(5, len(places_response['features'])))
+    return render_template('results.html', interests=interests, selected_locations=selected_locations, places=random5)
 
 @app.route('/login')
 def login():
