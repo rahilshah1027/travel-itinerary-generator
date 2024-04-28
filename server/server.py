@@ -62,17 +62,25 @@ def homepage():
 def search():
     interests = request.form.getlist('interests')
     locations = {
-        'amusement': 'Disneyland Park, Anaheim, CA',
-        'sports': 'Yankee Stadium, Bronx, NY',
+        'nature': 'New York City might seem like an unlikely destination for nature lovers, but it surprisingly offers numerous green spaces and natural retreats. Central Park, the citys most iconic park, spans over 840 acres and features meadows, woodlands, lakes, and gardens.',
+        'sports': 'If you are interested in sports, you should check out New York City! From the US Open Tennis Championships to major league games (MLB, NBA, NFL), NYC is a sports melting pot. Additionally, the city hosts the New York Marathon.',
+        'historical': 'New York City is a treasure trove for history enthusiasts for several reasons, encompassing a broad range of historical periods and cultural developments. This includes American Immigrant history, the American Revolutionary War, and the history of Wall Street.',
         # Add more interests and locations as needed
     }
     selected_locations = [locations[interest] for interest in interests if interest in locations]
 
+    interest_map = {
+        'nature': 'natural',
+        'sports': 'sport',
+        'historical': 'historic',
+        # Add more interests and locations as needed
+    }
+    kinds = ','.join(interest_map[i] for i in interests if i in interest_map)
+
     #opentripmap api call
     #interests = request.form.getlist('interests')
     lat, lon = 40.7128, -74.0060
-    places_response = fetch_places(lat, lon)
-    #kinds = ','.join(interests)
+    places_response = fetch_places(lat, lon, kinds=kinds)
     
     return render_template('results.html', selected_locations=selected_locations, places=places_response['features'])
 
