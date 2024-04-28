@@ -12,16 +12,35 @@
         {% endfor %}
     </ul>
     <a href="/">Back to Search</a>
+    {% if interests|length == 1 %}
+        <p>Based on your interest in {{ interests[0] }}, you might enjoy exploring...</p>
+    {% elif interests|length == 2 %}
+        <p>Based on your interests in {{ interests[0] }} and {{ interests[1] }}, you might enjoy exploring...</p>
+    {% else %}
+        <p>Based on your interests in 
+        {% for interest in interests %}
+            {{ interest }}{% if not loop.last %}, {% endif %}
+        {% endfor %}, you might enjoy exploring...</p>
+    {% endif %}
     <h1>API2: Nearby Interesting Places with OpenTripMap</h1>
     {% if places %}
         <ul>
         {% for place in places %}
             <li>
-                <strong>{{ place.properties.name }}</strong>
+                {% if place.properties.name|length > 1 %}
+                    <strong>{{ place.properties.name }}</strong>
+                {% endif %}
             </li>
         {% endfor %}
         </ul>
         {% else %}
             <p>No points of interest found.</p>
         {% endif %}
+    {% if error %}
+        <p style="color: red;">{{ error}}</p>
+    {% endif %}
+
+    <form action="/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
 </body>

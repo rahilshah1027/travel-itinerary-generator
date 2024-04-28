@@ -21,8 +21,7 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True)
     email: Mapped[str]
-#class Itinerary(db.Model):
-    #pass
+
 with app.app_context():
     db.create_all()
 
@@ -54,17 +53,24 @@ def homepage():
         print("User in session")
     else:
         print("User not in session")
-        return redirect(url_for('login'))
+        return render_template('login.html')
 
     return render_template('home.html')
 
 @app.route('/search', methods=['POST'])
 def search():
     interests = request.form.getlist('interests')
+    # check if the user entered any interests
+    if len(interests) == 0:
+        error = "Please select an interest"
+        return render_template("results.html", error=error)
+    
     locations = {
         'nature': 'New York City might seem like an unlikely destination for nature lovers, but it surprisingly offers numerous green spaces and natural retreats. Central Park, the citys most iconic park, spans over 840 acres and features meadows, woodlands, lakes, and gardens.',
         'sports': 'If you are interested in sports, you should check out New York City! From the US Open Tennis Championships to major league games (MLB, NBA, NFL), NYC is a sports melting pot. Additionally, the city hosts the New York Marathon.',
         'historical': 'New York City is a treasure trove for history enthusiasts for several reasons, encompassing a broad range of historical periods and cultural developments. This includes American Immigrant history, the American Revolutionary War, and the history of Wall Street.',
+        'architecture': 'add something here',
+        'amusements': 'add something here'
         # Add more interests and locations as needed
     }
     selected_locations = [locations[interest] for interest in interests if interest in locations]
@@ -73,6 +79,8 @@ def search():
         'nature': 'natural',
         'sports': 'sport',
         'historical': 'historic',
+        'architecture': 'architecture',
+        'amusements': 'amusements',
         # Add more interests and locations as needed
     }
     kinds = ','.join(interest_map[i] for i in interests if i in interest_map)
@@ -81,8 +89,10 @@ def search():
     #interests = request.form.getlist('interests')
     lat, lon = 40.7128, -74.0060
     places_response = fetch_places(lat, lon, kinds=kinds)
-    
-    return render_template('results.html', selected_locations=selected_locations, places=places_response['features'])
+    print(places_response['features'])
+    places = [places_response['features'][i] for i in range(5)]
+    print(places)
+    return render_template('results.html', interests=interests, selected_locations=selected_locations, places=places)
 
 @app.route('/login')
 def login():
@@ -99,7 +109,6 @@ def user_create(name, email):
     db.session.add(user)
     db.session.commit()
     print("User Added: ", user)
-    return redirect(url_for('/'))
 
 @app.route('/auth')
 def auth():
@@ -112,7 +121,7 @@ def auth():
             user_create(user_info['name'], user_info['email'])
     return redirect('/')
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user', None)
     return redirect('/')

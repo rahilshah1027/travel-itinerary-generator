@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Search</title>
 </head>
 <body>
     <p> Hello world</p>
     
-    <h1>API1: Find places based on your interests w/ ChatGPT</h1>
+    <h1>API1: Find places based on your interests </h1>
     <form action="/search" method="post">
         <label><input type="checkbox" name="interests" value="nature">Parks and Nature</label>
         <label><input type="checkbox" name="interests" value="sports">Sports</label>
         <label><input type="checkbox" name="interests" value="historical">Historical</label>
+        <label><input type="checkbox" name="interests" value="architecture">Architecture</label>
+        <label><input type="checkbox" name="interests" value="amusements">Amusement Parks</label>
         <!-- Add more interests as needed -->
         <button type="submit">Find Places</button>
     </form>
