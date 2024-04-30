@@ -26,6 +26,7 @@ class UserInterests(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     location: Mapped[str] = mapped_column()
     interests: Mapped[str] = mapped_column()
+    food: Mapped[str] = mapped_column()
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     user: Mapped[User] = relationship('User', backref='preferences')
 
@@ -66,6 +67,8 @@ def homepage():
 def search():
     location = request.form.get('location')
     interests = request.form.getlist('interests')
+    food = request.form.getlist('food')
+
     # check if the user entered any interests
     if len(interests) == 0:
         error = "Please select an interest"
@@ -77,11 +80,13 @@ def search():
     if user_interests:
         user_interests.location=location
         user_interests.interests=', '.join(interests)
+        user_interests.interests=', '.join(food)
         db.session.commit()
     else:
         user_interests = UserInterests(
             location=location, 
             interests=', '.join(interests),
+            food=', '.join(food),
             user_id=user.id,
         )
         session['user_id'] = user.id
@@ -105,6 +110,14 @@ def search():
         'amusements': 'amusements',
     }
     kinds = ','.join(interest_map[i] for i in interests if i in interest_map)
+    
+    food_map = {
+        'restaurants': 'restaurants',
+        'fast food': 'fast_food',
+        'cafes': 'cafes',
+        'bars': 'bars',
+    }
+    foods = ','.join(food_map[i] for i in food if i in food_map)
 
     #opentripmap api call
     location_coords = {
@@ -116,11 +129,12 @@ def search():
     }
     #lat, lon = 40.7128, -74.0060
     lat, lon = location_coords[location][0], location_coords[location][1]
-    places_response = fetch_places(lat, lon, radius=40000, kinds=kinds)
-
+    places_response = fetch_places(lat, lon, radius=20000, kinds=kinds)
+    food_response = fetch_places(lat, lon, radius=20000, kinds=foods)
     #filter out places with no names and chose 5 random ones
     random5 = random.choices([place for place in places_response['features'] if place['properties']['name'] != ''], k=min(5, len(places_response['features'])))
-    return render_template('results.html', interests=interests, selected_locations=selected_locations, places=random5)
+    random3 = random.choices([food for food in food_response['features'] if food['properties']['name'] != ''], k=min(3, len(food_response['features'])))
+    return render_template('results.html', interests=interests, selected_locations=selected_locations, places=random5, foods=random3)
 
 @app.route('/login')
 def login():

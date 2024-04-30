@@ -26,6 +26,7 @@
     {% if error %}
         <p style="color: red;">{{ error}}</p>
     {% else %}
+        <h3> Places: </h3>
         {% if places %}
             <ul>
             {% for place in places %}
@@ -37,6 +38,18 @@
             {% else %}
                 <p>No points of interest found.</p>
             {% endif %}
+        <h3> Foods: </h3>
+        {% if foods %}
+            <ul>
+            {% for food in foods %}
+                <li>
+                    <strong>{{ food.properties.name }}</strong>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No food locations found.</p>
+        {% endif %}
     {% endif %}
     
 
