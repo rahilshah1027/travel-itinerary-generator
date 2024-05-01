@@ -6,14 +6,14 @@
     <title>Plan Your Next Adventure</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_home.css') }}">
 </head>
+<header>
+    <form action="/logout" method="POST" class="logout-form">
+        <button type="submit" class="trip-button">Logout</button>
+    </form>
+<h1>Auto Travel Planner 🌴</h1>
+<p class="subtext">Put in your preferences and let us plan your trip!</p>
+</header>
 <body>
-    <header>
-        <form action="/logout" method="POST" class="logout-form">
-            <button type="submit" class="trip-button">Logout</button>
-        </form>
-    <h1>Auto Travel Planner 🌴</h1>
-    <p class="subtext">Put in your preferences and let us plan your trip!</p>
-    </header>
     <form action="/search" method="post">
             <div class="form-group">
                 <label for="name">Name:</label>

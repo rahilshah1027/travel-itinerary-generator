@@ -4,19 +4,26 @@ body {
     padding: 0;
     background-color: #ffffff;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     height: 100vh;
+    margin-left: 400px;
     flex-direction: column;
 }
 
 header {
     width: 100%;
-    margin-top: 300px; 
+    margin-top: 100px; 
     /*padding: 5px 0;  Adds padding top and bottom only */
-    margin-left: 600px;
+    margin-left: -200px;
     align-items: left;
-    text-align: left;
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+    color: #e31919;
+    margin-bottom: 16px;
 }
 
 .trip-button {
@@ -26,6 +33,7 @@ header {
     font-size: 16px;
     padding: 10px 20px;
     text-decoration: none;
+    border: none;
     border-radius: 20px; /* Adjust for the desired curvature */
     font-weight: bold;
     text-align: center;
@@ -37,3 +45,19 @@ header {
 .trip-button:hover {
     background-color: #44787a; /* Slightly darker green on hover */
 }
+
+.title {
+   
+    font-size: 25px;
+    color: #000000;
+    
+}
+
+.text {
+   
+    font-size: 15px;
+    color: #000000;
+    
+}
+
+

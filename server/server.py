@@ -68,6 +68,7 @@ def search():
     location = request.form.get('location')
     interests = request.form.getlist('interests')
     food = request.form.getlist('food')
+    name = request.form.getlist('name')
 
     # check if the user entered any interests
     if len(interests) == 0:
@@ -93,15 +94,6 @@ def search():
         db.session.add(user_interests)
         db.session.commit()
     
-    locations = {
-        'nature': 'New York City might seem like an unlikely destination for nature lovers, but it surprisingly offers numerous green spaces and natural retreats. Central Park, the citys most iconic park, spans over 840 acres and features meadows, woodlands, lakes, and gardens.',
-        'sports': 'If you are interested in sports, you should check out New York City! From the US Open Tennis Championships to major league games (MLB, NBA, NFL), NYC is a sports melting pot. Additionally, the city hosts the New York Marathon.',
-        'historical': 'New York City is a treasure trove for history enthusiasts for several reasons, encompassing a broad range of historical periods and cultural developments. This includes American Immigrant history, the American Revolutionary War, and the history of Wall Street.',
-        'architecture': 'add something here',
-        'amusements': 'add something here'
-    }
-    selected_locations = [locations[interest] for interest in interests if interest in locations]
-
     interest_map = {
         'nature': 'natural',
         'sports': 'sport',
@@ -134,7 +126,8 @@ def search():
     #filter out places with no names and chose 5 random ones
     random5 = random.choices([place for place in places_response['features'] if place['properties']['name'] != ''], k=min(5, len(places_response['features'])))
     random3 = random.choices([food for food in food_response['features'] if food['properties']['name'] != ''], k=min(3, len(food_response['features'])))
-    return render_template('results.html', interests=interests, selected_locations=selected_locations, places=random5, foods=random3)
+    
+    return render_template('results.html', interests=interests, places=random5, foods=random3, destination=location, name=name)
 
 @app.route('/login')
 def login():
