@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search</title>
+    <title>Plan Your Next Adventure</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_home.css') }}">
 </head>
 <body>
-    <p> Hello world</p>
-    <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
-    <h1>API1: Find places based on your interests </h1>
+    <header>
+        <form action="/logout" method="POST" class="logout-form">
+            <button type="submit" class="trip-button">Logout</button>
+        </form>
+    <h1>Auto Travel Planner 🌴</h1>
+    <p class="subtext">Put in your preferences and let us plan your trip!</p>
+    </header>
     <form action="/search" method="post">
-        <fieldset> 
-            <label>Name: <input type="text" name="name" required> </label>
-            <h2> What area would you like to visit? </h2> 
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>                
+            <p class="question"> What area would you like to visit? </p> 
                 <label><input type="radio" name="location" value="New York City" required>New York City</label>
                 <label><input type="radio" name="location" value="Los Angeles" required>Los Angeles</label>
                 <label><input type="radio" name="location" value="Boston" required>Boston</label>
                 <label><input type="radio" name="location" value="Chicago" required>Chicago</label>
                 <label><input type="radio" name="location" value="Miami" required>Miami</label>
 
-            <h2> What type of locations do you want to visit? </h2>
+            <p class="question">  What type of locations do you want to visit? </p>
                 <label><input type="checkbox" name="interests" value="nature">Parks and Nature</label>
                 <label><input type="checkbox" name="interests" value="sports">Sports</label>
                 <label><input type="checkbox" name="interests" value="historical">Historical</label>
                 <label><input type="checkbox" name="interests" value="architecture">Architecture</label>
                 <label><input type="checkbox" name="interests" value="amusements">Amusement Parks</label>
 
-            <h2> What type of food places do you want to eat at?</h2>
-                <label><input type="checkbox" name="food" value="restaurants">Restaurant</label>
+                <p class="question"> What type of food places do you want to eat at? </p>
+                
+                <input type="checkbox" name="food" value="restaurants" id="restaurants">
+                <label for="restaurants">Restaurant</label>
+
                 <label><input type="checkbox" name="food" value="cafes">Cafe</label>
                 <label><input type="checkbox" name="food" value="fast food">Fast Food</label>
                 <label><input type="checkbox" name="food" value="bars">Bar</label>
-        </fieldset>
-        <button type="submit">Find Places</button>
-    </form>
-
+                
+        <button type="submit" class="trip-button">Find Places</button>
+    </div>
 </body>
 </html>

@@ -1,0 +1,97 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    margin-top: 300px; 
+    /*padding: 5px 0;  Adds padding top and bottom only */
+    margin-left: 600px;
+    align-items: left;
+    text-align: left;
+}
+
+.logout-form {
+    align-self: left; /* Aligns the form to the left of the flex container */
+    margin: 0; /* Adjust margins as necessary */
+    padding: 0; /* Adjust padding as necessary */
+}
+
+h1 {
+    margin-top: 15px; /* Adjust top margin as needed */
+    font-size: 48px;
+    color: #000000;
+    margin-bottom: 0px;
+}
+
+.subtext {
+    margin-top: 0px;
+    font-size: 24px;
+    color: #e31919;
+    
+}
+
+.question {
+   
+    font-size: 25px;
+    color: #000000;
+    
+}
+
+label {
+    display: block; /* Makes the label a block element, putting it above the input */
+    margin-bottom: 5px; /* Adds some space between the label and the input */
+}
+
+input[type="text"] {
+    border: 1px solid #cccccc; /* Light gray border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 8px; /* Padding inside the text box */
+    outline: none; /* Removes the default focus outline */
+}
+
+input[type="text"]:focus {
+    border-color: #888888; /* Changes border color when focused */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column; /* Ensures that everything within main-content also stacks vertically */
+    width: 100%; /* Adjust width as necessary */
+}
+
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+.trip-button {
+    display: inline-block;
+    background-color: #6AC9CC; /* Adjust the color to match the exact green shade in your image */
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: none;
+    border-radius: 20px; /* Adjust for the desired curvature */
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 25px; /* Adjust based on your padding and font size */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.trip-button:hover {
+    background-color: #44787a; /* Slightly darker green on hover */
+}

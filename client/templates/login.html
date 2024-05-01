@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_login.css') }}">
 </head>
 <body>
-    <p>Click the button below to log in with your Google account!</p>
-    <a href="/login"><button hre>Login with Google</button></a>
+    
+    <div class="login-container">
+        <div class="svg-container">
+            <img src="{{ url_for('static', filename='img/login1.svg') }}" alt="Cruise Image 1">
+            <img src="{{ url_for('static', filename='img/login4.svg') }}" alt="Hotel Image 4">
+            <img src="{{ url_for('static', filename='img/login2.svg') }}" alt="Airplane Image 2">
+            <img src="{{ url_for('static', filename='img/login3.svg') }}" alt="Beach Image 3">
+        </div>
+        <h1>Your Next Journey, Optimized</h1>
+        <p class="subtext">Build, personalize, and optimize your itineraries with our free AI trip planner. Designed for vacations, workations, and everyday adventures.</p>
+        <a href="/login" class="trip-button">⎋ Login with Google</a>
+        
+    </div>
 </body>
 </html>

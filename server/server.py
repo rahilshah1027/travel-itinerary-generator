@@ -9,7 +9,7 @@ from flask import jsonify, request
 from dotenv import load_dotenv
 import os, requests, random
 
-app = Flask(__name__, template_folder='../client/templates')
+app = Flask(__name__, template_folder='../client/templates', static_folder='../static')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 app.secret_key = "randomstuff"
 db = SQLAlchemy(app)
