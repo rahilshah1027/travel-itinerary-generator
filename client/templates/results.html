@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_results.css') }}">
 </head>
 <body>
     <h1>API1 Search Results</h1>
@@ -11,7 +12,7 @@
             <li>{{ location }}</li>
         {% endfor %}
     </ul>
-    <a href="/">Back to Search</a>
+    <a href="/" class="trip-button">Back to Search</a>
     {% if interests|length == 1 %}
         <p>Based on your interest in {{ interests[0] }}, you might enjoy exploring...</p>
     {% elif interests|length == 2 %}

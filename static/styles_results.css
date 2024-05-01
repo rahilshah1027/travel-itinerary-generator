@@ -1,0 +1,39 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    margin-top: 300px; 
+    /*padding: 5px 0;  Adds padding top and bottom only */
+    margin-left: 600px;
+    align-items: left;
+    text-align: left;
+}
+
+.trip-button {
+    display: inline-block;
+    background-color: #6AC9CC; /* Adjust the color to match the exact green shade in your image */
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 20px; /* Adjust for the desired curvature */
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 25px; /* Adjust based on your padding and font size */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.trip-button:hover {
+    background-color: #44787a; /* Slightly darker green on hover */
+}
