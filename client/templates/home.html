@@ -14,7 +14,7 @@
 <p class="subtext">Put in your preferences and let us plan your trip!</p>
 </header>
 <body>
-    <form action="/search" method="post">
+    <form action="/search" method="POST">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>                
@@ -39,7 +39,14 @@
                 <label><input type="checkbox" name="food" value="fast food">Fast Food</label>
                 <label><input type="checkbox" name="food" value="bars">Bar</label>
                 
-        <button type="submit" class="trip-button">Find Places</button>
-    </div>
+            <button type="submit" class="trip-button">Find Places</button>
+        </div>
+    </form>
+    {% if prev %}
+        <form action="/prev" method="GET">
+            <button class="trip-button">Previous Selection</button>
+        </form>
+    {% endif %}
+
 </body>
 </html>

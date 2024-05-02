@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Selection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_results.css') }}">
+</head>
+<header>
+    <form action="/logout" method="POST" class="logout-form">
+        <button type="submit" class="trip-button">Logout</button>
+    </form>
+    <a href="/" class="trip-button">Back to Search</a>
+<h1>Auto Travel Planner 🌴</h1>
+</header>
+<body>
+    <h2> Welcome back {{ user.name }}, here are your previous selections... </h2>
+    {% if previous %}
+        <p> You previouly chose {{ previous.location}} as the location you wanted to visit </p>
+        <p> You previously chose {{ previous.interests}} as the things you were interested in visiting</p>
+    {% endif %}
+</body>
+</html>

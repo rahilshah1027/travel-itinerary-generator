@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -5,27 +6,27 @@
     <title>Search Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_results.css') }}">
 </head>
+
 <header><a href="/" class="trip-button">Back to Search</a>
     {% if name and destination %}
-        <h1>Hi {{ name }}, let's plan your trip to {{ destination }}! ✈️</h1>
+        <h1>Hi {{ name[0] }}, let's plan your trip to {{ destination }}! ✈️</h1>
     {% else %}
         <h1>Welcome, let's plan your trip!</h1>
     {% endif %}
     {% if interests|length == 1 %}
     <p>Based on your interest in {{ interests[0] }}, you might enjoy exploring...</p>
-{% elif interests|length == 2 %}
-    <p>Based on your interests in {{ interests[0] }} and {{ interests[1] }}, you might enjoy exploring...</p>
-{% else %}
-    <p>Based on your interests in 
-    {% for interest in interests %}
-        {{ interest }}{% if not loop.last %}, {% endif %}
-    {% endfor %}, you might enjoy exploring...</p>
-{% endif %}
+    {% elif interests|length == 2 %}
+        <p>Based on your interests in {{ interests[0] }} and {{ interests[1] }}, you might enjoy exploring...</p>
+    {% else %}
+        <p>Based on your interests in 
+        {% for interest in interests %}
+            {{ interest }}{% if not loop.last %}, {% endif %}
+        {% endfor %}, you might enjoy exploring...</p>
+    {% endif %}
 </header>
 <body>
-    
     {% if error %}
-        <p style="color: red;">{{ error}}</p>
+        <p style="color: red;">{{ error }}</p>
     {% else %}
         <p class="title"> 🌋 Places: </p>
         {% if places %}
@@ -53,8 +54,9 @@
         {% endif %}
     {% endif %}
     
-
     <form action="/logout" method="POST">
         <button type="submit" class="trip-button">Logout</button>
     </form>
+    
 </body>
+</html>

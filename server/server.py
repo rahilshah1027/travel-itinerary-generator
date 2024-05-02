@@ -57,11 +57,15 @@ oauth.register(
 def homepage():
     if 'user' in session:
         user = session['user']
+        # check if user has already been to site before and has a previous selection
+        email = session.get('user').get('email')
+        user = User.query.filter_by(email=email).first()
+        prev_userinterests = UserInterests.query.filter_by(user_id=user.id).first()
         print("User in session")
     else:
         print("User not in session")
         return render_template('login.html')
-    return render_template('home.html')
+    return render_template('home.html', prev=prev_userinterests)
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -81,7 +85,7 @@ def search():
     if user_interests:
         user_interests.location=location
         user_interests.interests=', '.join(interests)
-        user_interests.interests=', '.join(food)
+        user_interests.food=', '.join(food)
         db.session.commit()
     else:
         user_interests = UserInterests(
@@ -123,11 +127,21 @@ def search():
     lat, lon = location_coords[location][0], location_coords[location][1]
     places_response = fetch_places(lat, lon, radius=20000, kinds=kinds)
     food_response = fetch_places(lat, lon, radius=20000, kinds=foods)
-    #filter out places with no names and chose 5 random ones
+    #filter out places with no names and choose 5 random ones
     random5 = random.choices([place for place in places_response['features'] if place['properties']['name'] != ''], k=min(5, len(places_response['features'])))
     random3 = random.choices([food for food in food_response['features'] if food['properties']['name'] != ''], k=min(3, len(food_response['features'])))
     
     return render_template('results.html', interests=interests, places=random5, foods=random3, destination=location, name=name)
+
+@app.route('/prev/')
+def prev():
+    if 'user' in session:
+        email = session.get('user').get('email')
+        user = User.query.filter_by(email=email).first()
+        prev_userinterests = UserInterests.query.filter_by(user_id=user.id).all()
+        print(prev_userinterests[0].interests)
+        print(prev_userinterests[0].location)
+    return render_template('prev.html', user=user, previous=prev_userinterests[0])
 
 @app.route('/login')
 def login():
