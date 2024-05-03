@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Previous Selection</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles_results.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_prev.css') }}">
 </head>
 <header>
+    <div class="button-container">
     <form action="/logout" method="POST" class="logout-form">
         <button type="submit" class="trip-button">Logout</button>
     </form>
     <a href="/" class="trip-button">Back to Search</a>
+</div>
 <h1>Auto Travel Planner 🌴</h1>
 </header>
 <body>
@@ -20,4 +22,10 @@
         <p> You previously chose {{ previous.interests}} as the things you were interested in visiting</p>
     {% endif %}
 </body>
+<div class="svg-container">
+    <img src="{{ url_for('static', filename='img/login1.svg') }}" alt="Cruise Image 1">
+    <img src="{{ url_for('static', filename='img/login4.svg') }}" alt="Hotel Image 4">
+    <img src="{{ url_for('static', filename='img/login2.svg') }}" alt="Airplane Image 2">
+    <img src="{{ url_for('static', filename='img/login3.svg') }}" alt="Beach Image 3">
+</div>
 </html>

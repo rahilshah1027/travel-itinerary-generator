@@ -14,14 +14,19 @@ header {
     width: 100%;
     margin-top: 300px; 
     /*padding: 5px 0;  Adds padding top and bottom only */
-    margin-left: 600px;
-    align-items: left;
-    text-align: left;
+    /*margin-left: 400px; */
+    text-align: center;
+    align-items: flex-start;
+}
+
+.button-container form {
+    display: inline-block;
+    margin-right: 5px;
 }
 
 .logout-form {
-    align-self: left; /* Aligns the form to the left of the flex container */
-    margin: 0; /* Adjust margins as necessary */
+    align-self: center; /* Aligns the form to the left of the flex container */
+    /*margin-right: 100px; /* Adjust margins as necessary */
     padding: 0; /* Adjust padding as necessary */
 }
 
@@ -77,7 +82,6 @@ form {
 }
 
 .trip-button {
-    margin-top: 50px;
     display: inline-block;
     background-color: #6AC9CC; /* Adjust the color to match the exact green shade in your image */
     color: white;
@@ -91,6 +95,7 @@ form {
     vertical-align: middle;
     line-height: 25px; /* Adjust based on your padding and font size */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
+    margin-top: 20px;
 }
 
 .trip-button:hover {

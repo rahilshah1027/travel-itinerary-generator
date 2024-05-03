@@ -13,11 +13,15 @@ body {
 
 header {
     width: 100%;
-    margin-top: 70px; 
+    margin-top: 100px; 
+    margin-left: -200px; 
     /*padding: 5px 0;  Adds padding top and bottom only */
-    margin-left: -200px;
-    align-items: left;
     text-align: center;
+}
+
+.button-container form {
+    display: inline-block;
+    margin-right: 7px;
 }
 
 h1 {
@@ -60,4 +64,16 @@ h1 {
     
 }
 
+.svg-container {
+    display: flex;  /* Aligns all child img elements in a row */
+    justify-content: space-between;  /* Distributes space between the images */
+    align-items: center;  /* Vertically aligns images if they have different heights */
+    margin-left: 55px;
+}
 
+.svg-container img {
+    margin-top: 50px;
+    width: 100px;  /* Sets a fixed width for each SVG */
+    height: auto;  /* Maintains the aspect ratio of the SVG */
+    margin-right: 50px;
+}
